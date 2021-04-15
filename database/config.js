@@ -1,3 +1,4 @@
+//Importacion de ORM Mongoose, requiere instalacion previa
 const mongoose = require('mongoose');
 
 //El async convierte la funcion en una promesa

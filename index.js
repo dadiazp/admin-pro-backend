@@ -1,3 +1,4 @@
+//Importacion de express, requiere instalacion previa
 const express = require('express');
 
 //Como dbConnection devuelve un objeto, se usa la desestructuracion, 
@@ -16,20 +17,19 @@ const app = express();
 //Configurar CORS
 app.use(cors())
 
+//Lectura y parseo del body(Request)
+//Esto debe colocarse antes de las rutas, de lo contrario funciona mal, el orden importa
+app.use(express.json())
+
 //Base de datos
 dbConnection();
 
 
 //Rutas
-app.get('/', (request, response) => {
-
-    response.json({
-        ok: true,
-        msg: 'Hola mundo'
-    });
-    
-});
-
+//El primer parametro es la ruta
+//El segundo parametro es quien va a responder a esa ruta en el primer parametro
+app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/login', require('./routes/auth'));
 
 //Levantar la app
 app.listen(process.env.PORT, () => {
