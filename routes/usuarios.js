@@ -10,12 +10,12 @@ const {check} = require('express-validator');
 //Importacion del middleware que valida campos
 const {validarCampos} = require('../middlewares/validar-campos');
 
-const router = Router();
-
-const {getUsuarios, crearUsuario, actualizarUsuario, borrarUsuario} = require('../controllers/usuarios');
-        
 const { validarJWT } = require('../middlewares/validar-jwt');
 
+const {getUsuarios, crearUsuario, actualizarUsuario, borrarUsuario} = require('../controllers/usuarios');
+
+const router = Router();
+        
 router.get('/', validarJWT, getUsuarios);
 
 //El segundo paremetro es para middleware. Para definir mas de un middleware usamos corchetes

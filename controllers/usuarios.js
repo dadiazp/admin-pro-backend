@@ -9,12 +9,27 @@ const { generarJWT } = require('../helpers/jwt');
 
 const getUsuarios = async(request, response) => {
 
-    const usuarios = await Usuario.find({}, 'nombre email role google');
+    //Recoger el parametro de la URL
+    const desde = Number (request.query.desde) || 0; // Si no mando el desde, se setea en 0
+
+    //Esto es una coleccion de promesas. Lo ejecuto de esta forma para ejecutar todas las promesas
+    //dentro de la coleccion de manera sincrona (al mismo tiempo). Cuando TODAS las promesas han terminado su proceso es que se
+    //devolverá una respuesta. La respuesta es un array con el resolve de cada promesa
+    const [usuarios, total] = await Promise.all([
+        //1ra posicion del arreglo
+        Usuario.find({}, 'nombre email role google img')
+        .skip(desde) //Con esto se va a saltar los registros que esten antes de la variable desde
+        .limit(5), //Con esto establezco el número de registro que quiero que se muestren
+
+        //2da posicion del arreglo
+        Usuario.countDocuments()
+    ]);
+
 
     response.json({
         ok: true,
         usuarios,
-        uid: request.uid
+        total
     });
    
 }
