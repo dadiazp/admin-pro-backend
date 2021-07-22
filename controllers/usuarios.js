@@ -117,8 +117,17 @@ const actualizarUsuario = async(req, res = response) =>{
             }
         }
 
-        //Vuelvo añadir el email para ser actualizado
-        campos.email = email;
+        //De este modo evito que un usuario cambie el correo si está logueado con correo
+        if(!usuarioDB.google){
+            //Vuelvo añadir el email para ser actualizado
+            campos.email = email;
+        }else if(usuarioDB.email !== email){
+            return res.status(400).json({
+                ok: false,
+                msg: 'Usuarios de Google no pueden cambiar su correo'
+            });
+        }
+
         const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, campos, {new:true}); //Con el new en true mongoose devuelve el usuario actualizado
 
         return res.json({

@@ -112,9 +112,12 @@ const renewToken = async(request, response = response) => {
 
     const token = await generarJWT(uid);
 
+    const usuario = await Usuario.findById(uid);
+
     response.json({
         ok: true,
-        token
+        token,
+        usuario
     });
 
 }

@@ -12,9 +12,15 @@
  
  const router = Router();
          
- const {getMedicos, crearMedico, actualizarMedico, borrarMedico} = require('../controllers/medicos');
+ const {getMedicos, getMedico, crearMedico, actualizarMedico, borrarMedico} = require('../controllers/medicos');
  
  router.get('/', getMedicos);
+
+ router.get(
+    '/:id', 
+    validarJWT, 
+    getMedico
+);
  
  //El segundo paremetro es para middleware. Para definir mas de un middleware usamos corchetes
  router.post(
